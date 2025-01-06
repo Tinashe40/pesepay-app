@@ -19,7 +19,7 @@ class PaymentGateway
             $_ENV['PESEPAY_ENCRYPTION_KEY']
         );
 
-        $this->pesepay->returnUrl = "http://localhost:8000/public/return.php";
+        $this->pesepay->returnUrl = $_ENV['RETURN_URL'];
         $this->pesepay->resultUrl = $_ENV['RESULT_URL'];
     }
 
