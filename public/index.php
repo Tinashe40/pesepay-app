@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use Tina\PesepayApp\PaymentGateway;
+use Tina\PesepayApp\Database;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $amount = $_POST['amount'];
@@ -12,20 +13,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $gateway = new PaymentGateway();
         $payment = $gateway->createPayment($amount, $currency);
 
+        // Save the donation record to the database
+        $db = new Database();
+        $db->insertDonation($amount, $currency, 'Pending', $payment['referenceNumber']);
+
         // Redirect the user to complete payment
         header("Location: " . $payment['redirectUrl']);
         exit;
     } catch (Exception $e) {
-        echo "Error: " . $e->getMessage();
+        echo "Error: " . htmlspecialchars($e->getMessage());
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html>
 
 <head>
-  <title>Pesepay Payment</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Donate Now</title>
+  <style>
+  /* Your existing CSS */
+  </style>
 </head>
 
 <body>
