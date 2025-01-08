@@ -1,16 +1,14 @@
-# Use a PHP 8.1 image
-FROM php:8.1-fpm
+FROM php:8.1-cli
 
-# Install system dependencies
+# Install required libraries
 RUN apt-get update && apt-get install -y \
     libpng-dev \
     libjpeg-dev \
     libfreetype6-dev \
-    && rm -rf /var/lib/apt/lists/* \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd pdo pdo_pgsql
+    libpq-dev \
+    && docker-php-ext-install pdo_pgsql pgsql \
+    && rm -rf /var/lib/apt/lists/*
 
-# Other setup commands
 
 
 # Set the working directory
